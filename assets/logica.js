@@ -1,26 +1,33 @@
-let valorPantalla = "";
 
-function limpiarPantalla() {
-    valorPantalla = "";
-    actualizarPantalla();
+function enviarDatos(){
+    const nombre = document.getElementById('nombre').value;
+    enviarDatosAlServidor(nombre)
+    .then(mensajeAgradecimiento)
+    .catch(mensajeError);
 }
 
-function agregarCaracter(char) {
-    valorPantalla += char;
-    actualizarPantalla();
+function enviarDatosAlServidor(nombre){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const exito =(nombre.toLowerCase() !== 'error');
+            if (exito){
+                resolve(`Bienvenido al Sistema `);
+            }else{
+                reject(`Acceso denegado`);
+            }
+        }, 2000);
 
+    });
+};
+
+function mensajeAgradecimiento(mensaje){
+    const mensajeElemnt = document.getElementById('mensaje');
+    mensajeElemnt.textContent = mensaje;
+    mensajeElemnt.classList.remove('oculto');
 }
 
-function calcular() {
-    try {
-        valorPantalla = eval(valorPantalla).toString();
-        actualizarPantalla();
-     } catch (e) { 
-        valorPantalla='Syntax ERROR';
-        actualizarPantalla();
-     }
-}
-
-function actualizarPantalla() {
-    document.getElementById('pantalla').value = valorPantalla;
+function mensajeError(error){
+    const errorElemnt = document.getElementById('mensaje');
+    errorElemnt.textContent = error;
+    errorElemnt.classList.remove('oculto');
 }
