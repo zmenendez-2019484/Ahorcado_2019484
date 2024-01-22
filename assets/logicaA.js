@@ -1,23 +1,17 @@
 
-async function enviarDatos(){
+function enviarDatos(){
     const nombre = document.getElementById('nombre').value;
-    try{
-        const resultado= await enviarDatosAlServidor(nombre);
-        mensajeAgradecimiento(resultado);
-    }catch(error){
-        mensajeError(error); 
-    }
+    enviarDatosAlServidor(nombre)
+    .then(mensajeAgradecimiento)
+    .catch(mensajeError);
 }
 
 function enviarDatosAlServidor(nombre){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const exito =(nombre.toLowerCase() !== 'error');
-            if (exito){
-                resolve(`Bienvenido al Sistema `);
-            }else{
-                reject(`Acceso denegado`);
-            }
+           const resultado = (exito) ? `Bienvenido al Sistema ` : `Acceso denegado`;
+              (exito) ? resolve(resultado) : reject(resultado);
         }, 2000);
 
     });
